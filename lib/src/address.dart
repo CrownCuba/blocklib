@@ -19,8 +19,17 @@ class Address {
     }
   }
 
-  static Uint8List addressToOutputScript(String address, [NetworkType? nw]) {
+  static bool _comparePrefixNetwork(
+      List<int> keyBytes, Uint8List addresPrefix) {
+    for (int i = 0; i < keyBytes.length; i++) {
+      if (keyBytes[i] != addresPrefix[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
+  static Uint8List addressToOutputScript(String address, [NetworkType? nw]) {
     NetworkType network = nw ?? bitcoin;
     var decodeBase58;
     var decodeBech32;
@@ -30,23 +39,20 @@ class Address {
     } catch (err) {}
 
     if (decodeBase58 != null) {
+      final prefix = decodeBase58.sublist(0, nw?.pubKeyHash.length);
+      final data = decodeBase58.sublist(nw?.pubKeyHash.length);
 
-      final prefix = decodeBase58[0];
-      final data = decodeBase58.sublist(1);
-
-      if (prefix == network.pubKeyHash) {
-        P2PKH p2pkh = P2PKH(
-            data: PaymentData(address: address), network: network
-        );
+      if (_comparePrefixNetwork(network.pubKeyHash, prefix)) {
+        P2PKH p2pkh =
+            P2PKH(data: PaymentData(address: address), network: network);
         return p2pkh.data.output!;
       }
 
-      if (prefix == network.scriptHash) {
+      if (_comparePrefixNetwork(network.scriptHash, prefix)) {
         return createP2shOutputScript(data);
       }
 
       throw ArgumentError('Invalid version or Network mismatch');
-
     }
 
     try {
@@ -54,7 +60,6 @@ class Address {
     } catch (err) {}
 
     if (decodeBech32 != null) {
-
       if (network.bech32 != decodeBech32.hrp)
         throw new ArgumentError('Invalid prefix or Network mismatch');
 
@@ -66,8 +71,7 @@ class Address {
 
       if (progLen == 20) {
         P2WPKH p2wpkh = new P2WPKH(
-            data: new PaymentData(address: address), network: network
-        );
+            data: new PaymentData(address: address), network: network);
         return p2wpkh.data.output!;
       }
 
@@ -76,10 +80,8 @@ class Address {
       }
 
       throw ArgumentError('The bech32 witness program is not the correct size');
-
     }
 
     throw new ArgumentError(address + ' has no matching Script');
-
   }
 }
