@@ -64,9 +64,10 @@ class P2PKH {
 
   void _getDataFromHash() {
     if (data.address == null) {
-      final payload = new Uint8List(21);
-      payload.buffer.asByteData().setUint8(0, network.pubKeyHash);
-      payload.setRange(1, payload.length, data.hash!);
+      final payload = new Uint8List(20 + network.pubKeyHash.length);
+      //payload.buffer.asByteData().setUint8(0, network.pubKeyHash);
+      payload.setRange(0, network.pubKeyHash.length, network.pubKeyHash);
+      payload.setRange(network.pubKeyHash.length, payload.length, data.hash!);
       data.address = bs58check.encode(payload);
     }
     if (data.output == null) {
@@ -80,12 +81,22 @@ class P2PKH {
     }
   }
 
+  static bool _comparePrefixNetwork(
+      List<int> keyBytes, Uint8List addresPrefix) {
+    for (int i = 0; i < keyBytes.length; i++) {
+      if (keyBytes[i] != addresPrefix[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   void _getDataFromAddress(String address) {
     Uint8List payload = bs58check.decode(address);
-    final version = payload.buffer.asByteData().getUint8(0);
-    if (version != network.pubKeyHash)
+    final version = payload.sublist(0, network.pubKeyHash.length);
+    if (!_comparePrefixNetwork(network.pubKeyHash, version))
       throw new ArgumentError('Invalid version or Network mismatch');
-    data.hash = payload.sublist(1);
+    data.hash = payload.sublist(network.pubKeyHash.length);
     if (data.hash!.length != 20) throw new ArgumentError('Invalid address');
   }
 }
