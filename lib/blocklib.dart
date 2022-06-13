@@ -1,7 +1,7 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library coinslib;
+library blocklib;
 
 export 'src/coinslib_base.dart';
 export 'src/models/networks.dart';

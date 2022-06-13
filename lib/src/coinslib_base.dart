@@ -1,6 +1,6 @@
 // TODO: Put public facing types in this file.
 import 'dart:typed_data';
-import 'package:coinslib/src/utils/magic_hash.dart';
+import 'package:blocklib/src/utils/magic_hash.dart';
 import 'package:hex/hex.dart';
 import 'bip32_base.dart' as bip32;
 import 'models/networks.dart';
