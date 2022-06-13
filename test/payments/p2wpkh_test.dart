@@ -1,7 +1,7 @@
-import 'package:coinslib/src/payments/index.dart' show PaymentData;
-import 'package:coinslib/src/payments/p2wpkh.dart';
+import 'package:blocklib/src/payments/index.dart' show PaymentData;
+import 'package:blocklib/src/payments/p2wpkh.dart';
 import 'package:test/test.dart';
-import 'package:coinslib/src/utils/script.dart' as bscript;
+import 'package:blocklib/src/utils/script.dart' as bscript;
 import 'dart:io';
 import 'dart:convert';
 import 'package:hex/hex.dart';

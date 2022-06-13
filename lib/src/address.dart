@@ -1,9 +1,9 @@
 import 'dart:typed_data';
-import 'package:coinslib/src/payments/p2wsh.dart';
+import 'package:blocklib/src/payments/p2wsh.dart';
 
 import 'models/networks.dart';
 import 'package:bs58check/bs58check.dart' as bs58check;
-import 'package:coinslib/bech32/bech32.dart';
+import 'package:blocklib/bech32/bech32.dart';
 import 'payments/index.dart' show PaymentData;
 import 'payments/p2pkh.dart';
 import 'payments/p2wpkh.dart';

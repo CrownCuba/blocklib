@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:coinslib/src/models/networks.dart';
-import 'package:coinslib/src/payments/index.dart' show PaymentData;
-import 'package:coinslib/src/payments/p2pkh.dart';
+import 'package:blocklib/src/models/networks.dart';
+import 'package:blocklib/src/payments/index.dart' show PaymentData;
+import 'package:blocklib/src/payments/p2pkh.dart';
 import 'package:test/test.dart';
 import 'package:hex/hex.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:coinslib/src/bip32_base.dart' as bip32;
+import 'package:blocklib/src/bip32_base.dart' as bip32;
 
 void main() {
   group('bitcoin-dart (BIP32)', () {
@@ -14,7 +14,8 @@ void main() {
       const xpriv =
           'tprv8ZgxMBicQKsPd7Uf69XL1XwhmjHopUGep8GuEiJDZmbQz6o58LninorQAfcKZWARbtRtfnLcJ5MQ2AtHcQJCCRUcMRvmDUjyEmNUWwx8UbK';
       final node = bip32.BIP32.fromBase58(xpriv, testnet);
-      expect(node.toWIF(), 'cQfoY67cetFNunmBUX5wJiw3VNoYx3gG9U9CAofKE6BfiV1fSRw7');
+      expect(
+          node.toWIF(), 'cQfoY67cetFNunmBUX5wJiw3VNoYx3gG9U9CAofKE6BfiV1fSRw7');
     });
     test('can export a BIP32 xpriv, then import it', () {
       const mnemonic =

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:coinslib/src/utils/constants/op.dart';
+import 'package:blocklib/src/utils/constants/op.dart';
 import 'package:hex/hex.dart';
 import 'utils/script.dart' as bscript;
 import 'ecpair.dart';
@@ -97,7 +97,6 @@ class TransactionBuilder {
   }
 
   int addNullOutput(dynamic data) {
-
     // Encode string to Uint8List or take Uint8List
     late Uint8List pushData;
     if (data is String) {
@@ -110,22 +109,17 @@ class TransactionBuilder {
 
     // Enforce the limit of the allowed data size
     if (data.length > network.opreturnSize) {
-      throw new ArgumentError(
-        'Too much data, max OP_RETURN size is ' +
-        network.opreturnSize.toString()
-      );
+      throw new ArgumentError('Too much data, max OP_RETURN size is ' +
+          network.opreturnSize.toString());
     }
 
     // Encode output script with OP_RETURN followed by the push data
     final script = bscript.compile([OPS['OP_RETURN'], pushData]);
     return _addOutputFromScript(script, BigInt.zero);
-
   }
 
-  int addInput(
-      dynamic txHash, int vout, [int? sequence, Uint8List? prevOutScript]
-  ) {
-
+  int addInput(dynamic txHash, int vout,
+      [int? sequence, Uint8List? prevOutScript]) {
     if (!_canModifyInputs()) {
       throw new ArgumentError('No, this would invalidate signatures');
     }
@@ -146,11 +140,8 @@ class TransactionBuilder {
       throw new ArgumentError('txHash invalid');
     }
 
-    return _addInputUnsafe(
-        hash, vout,
-        Input(sequence: sequence, prevOutScript: prevOutScript, value: value)
-    );
-
+    return _addInputUnsafe(hash, vout,
+        Input(sequence: sequence, prevOutScript: prevOutScript, value: value));
   }
 
   sign(
@@ -292,9 +283,8 @@ class TransactionBuilder {
   }
 
   bool _overMaximumFees(int bytes) {
-    BigInt sumValues(list) => list.fold(
-        BigInt.zero, (cur, acc) => cur + (acc.value ?? BigInt.zero)
-    );
+    BigInt sumValues(list) =>
+        list.fold(BigInt.zero, (cur, acc) => cur + (acc.value ?? BigInt.zero));
     BigInt incoming = sumValues(_inputs);
     BigInt outgoing = sumValues(_tx.outs);
     BigInt fee = incoming - outgoing;

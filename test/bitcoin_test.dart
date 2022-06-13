@@ -1,4 +1,4 @@
-import 'package:coinslib/coinslib.dart';
+import 'package:blocklib/blocklib.dart';
 import 'package:test/test.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
