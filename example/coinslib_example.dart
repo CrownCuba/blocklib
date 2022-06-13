@@ -1,4 +1,4 @@
-import 'package:coinslib/coinslib.dart';
+import 'package:blobklib/blocklib.dart';
 
 main() {
   final crown = NetworkType(
