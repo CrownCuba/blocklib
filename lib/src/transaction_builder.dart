@@ -366,6 +366,13 @@ class TransactionBuilder {
     } else {
       input = new Input();
     }
+
+    input.hash = hash;
+    input.index = vout;
+    input.sequence = options.sequence ?? DEFAULT_SEQUENCE;
+    input.script = options.script ?? EMPTY_SCRIPT;
+    input.witness = options.witness ?? EMPTY_WITNESS;
+
     if (options.value != null) input.value = options.value;
     if (input.prevOutScript == null && options.prevOutScript != null) {
       if (input.pubkeys == null && input.signatures == null) {
