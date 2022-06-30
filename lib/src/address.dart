@@ -39,8 +39,8 @@ class Address {
     } catch (err) {}
 
     if (decodeBase58 != null) {
-      final prefix = decodeBase58.sublist(0, network.pubKeyHash.length);
-      final data = decodeBase58.sublist(network.pubKeyHash.length);
+      final prefix = decodeBase58.sublist(0, nw?.pubKeyHash.length);
+      final data = decodeBase58.sublist(nw?.pubKeyHash.length);
 
       if (_comparePrefixNetwork(network.pubKeyHash, prefix)) {
         P2PKH p2pkh =
